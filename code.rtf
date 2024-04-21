@@ -34,7 +34,8 @@ ADD country_id INT AFTER id,\
 ADD CONSTRAINT fk_country_id FOREIGN KEY (country_id) REFERENCES countries(id);\
 \
 UPDATE infectious_cases_normalized i, countries c  \
-SET i.country_id = c.id WHERE c.code = i.code;\
+SET i.country_id = c.id \
+WHERE c.code = i.code AND c.country = i.entity;\
 \
 ALTER TABLE infectious_cases_normalized\
 DROP COLUMN entity,\
@@ -47,7 +48,8 @@ SELECT \
     id, \
     MAX(number_rabies) AS max_value, \
     MIN(number_rabies) AS min_value, \
-    AVG(number_rabies) AS average_value \
+    AVG(number_rabies) AS average_value,\
+    SUM(number_rabies) AS sum_value\
 FROM \
     infectious_cases_normalized\
 WHERE \
